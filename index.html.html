@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>☁️ 淋雨の小窝</title>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui, "Microsoft YaHei", sans-serif;
+}
+
+body{
+  background:
+    linear-gradient(135deg,#b8dbf5 0%,#8ec3e8 45%,#67a9dd 100%);
+  color:#253447;
+  min-height:100vh;
+}
+
+/* 顶部导航 */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  padding:14px 48px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(10px);
+  z-index:999;
+  border-bottom:1px solid rgba(255,255,255,0.5);
+}
+
+.logo{
+  font-size:16px;
+  font-weight:bold;
+  color:#2f6b8f;
+}
+
+.nav-links{
+  display:flex;
+  gap:20px;
+  list-style:none;
+}
+
+.nav-links button{
+  background:none;
+  border:none;
+  color:#2f6b8f;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  padding:6px 12px;
+  border-radius:99px;
+  transition:0.2s;
+}
+
+.nav-links button:hover{
+  background:rgba(255,255,255,0.5);
+}
+
+.nav-links button.active{
+  background:#2f6b8f;
+  color:#fff;
+}
+
+/* 页面切换 */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:90px 48px 60px;
+}
+
+.page.show{
+  display:block;
+}
+
+.container{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+/* 标题 */
+h2{
+  font-size:22px;
+  color:#2f6b8f;
+  margin-bottom:24px;
+  display:inline-block;
+  border-left:5px solid #7ab8d4;
+  padding-left:10px;
+}
+
+/* 主页 Hero */
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+  padding-top:40px;
+}
+
+.hero-text h1{
+  font-size:34px;
+  color:#2f6b8f;
+  margin-bottom:14px;
+}
+
+.hero-text p{
+  font-size:15px;
+  line-height:1.8;
+  color:#3d4f5f;
+  margin-bottom:10px;
+}
+
+.hero-card{
+  background:rgba(255,255,255,0.55);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 10px 30px rgba(80,140,180,0.2);
+  width:320px;
+  text-align:center;
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#9fd0f0,#579ed1);
+  margin:0 auto 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  color:white;
+  font-weight:bold;
+  box-shadow:0 6px 16px rgba(70,130,170,0.3);
+}
+
+/* 关于我 */
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+
+.panel{
+  background:rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 8px 24px rgba(80,140,180,0.15);
+}
+
+.panel h3{
+  color:#2f6b8f;
+  margin-bottom:10px;
+}
+
+.panel p{
+  line-height:1.8;
+  font-size:14px;
+  color:#3d4f5f;
+}
+
+/* ===== 网站统计样式 ===== */
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+.stat-card{
+  background:rgba(255,255,255,0.55);
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 6px 20px rgba(80,140,180,0.15);
+}
+.stat-card .num{
+  font-size:28px;
+  font-weight:bold;
+  color:#2f6b8f;
+  margin-bottom:6px;
+}
+.stat-card .name{
+  font-size:13px;
+  color:#4f6b8f;
+}
+.stat-desc{
+  background:rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:20px;
+}
+.stat-desc p{
+  font-size:14px;
+  color:#3d4f5f;
+  line-height:1.7;
+  margin-bottom:8px;
+}
+
+/* 项目展示 */
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.project-card{
+  background:rgba(255,255,255,0.55);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(80,140,180,0.18);
+  transition:0.3s;
+}
+
+.project-card:hover{
+  transform:translateY(-6px);
+}
+
+.project-cover{
+  height:140px;
+  background:linear-gradient(135deg,#a9d4f2,#579ed1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:40px;
+}
+
+.project-body{
+  padding:18px;
+}
+
+.project-body h4{
+  margin-bottom:8px;
+  color:#2f6b8f;
+}
+
+.project-body p{
+  font-size:13px;
+  color:#4f6b8f;
+  line-height:1.7;
+}
+
+/* 留言板 */
+.message-board{
+  background:rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 8px 24px rgba(80,140,180,0.15);
+}
+
+.message-list{
+  margin-top:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.message-item{
+  background:rgba(255,255,255,0.65);
+  border-radius:14px;
+  padding:14px 18px;
+  color:#3d4f5f;
+  font-size:14px;
+}
+
+/* 底部 */
+footer{
+  background:rgba(255,255,255,0.4);
+  text-align:center;
+  padding:20px;
+  color:#4f6b8f;
+  font-size:13px;
+}
+
+/* 手机适配 */
+@media (max-width:768px){
+  .navbar{
+    padding:12px 16px;
+  }
+  .nav-links{
+    gap:8px;
+  }
+  .nav-links button{
+    font-size:12px;
+    padding:5px 8px;
+  }
+  .page{
+    padding:80px 20px 40px;
+  }
+  .hero{
+    flex-direction:column;
+    text-align:center;
+  }
+  .hero-text h1{
+    font-size:26px;
+  }
+  .about-grid,
+  .projects-grid{
+    grid-template-columns:1fr;
+  }
+  .stat-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 顶部导航 -->
+<nav class="navbar">
+  <div class="logo">☁️ 淋雨の小窝</div>
+  <ul class="nav-links">
+    <li><button class="active" data-page="home">主页</button></li>
+    <li><button data-page="about">关于我</button></li>
+    <li><button data-page="stats">网站统计</button></li>
+    <li><button data-page="projects">项目</button></li>
+    <li><button data-page="messages">留言板</button></li>
+  </ul>
+</nav>
+
+<!-- 主页 -->
+<div class="page show" id="home">
+  <div class="container hero">
+    <div class="hero-text">
+      <h1>你好，我是淋雨</h1>
+      <p>这里是我的小站，用来记录生活、分享想法。</p >
+      <p>喜欢安静一点的东西，也喜欢慢慢把事情做好。</p >
+      <p>欢迎来到我的小窝 ✨</p >
+    </div>
+
+    <div class="hero-card">
+      <div class="avatar">雨</div>
+      <p style="color:#2f6b8f;font-weight:bold;margin-bottom:8px;">淋雨</p >
+      <p style="font-size:13px;color:#4f6b8f;">个人主页 / 博客 / 随笔记录</p >
+    </div>
+  </div>
+</div>
+
+<!-- 关于我 -->
+<div class="page" id="about">
+  <div class="container">
+    <h2>关于我</h2>
+
+    <div class="about-grid">
+      <div class="panel">
+        <h3>自我介绍</h3>
+        <p>我是淋雨，喜欢整理、记录和创造一些小小的东西。</p >
+        <p>这个网站是我的个人小窝，以后会慢慢加入更多内容，比如博客、随笔、项目展示和日常记录。</p >
+      </div>
+
+      <div class="panel">
+        <h3>兴趣爱好</h3>
+        <p>💻 网页制作与小工具</p >
+        <p>🎮 游戏与日常放松</p >
+        <p>📝 写随笔和记录心情</p >
+        <p>🎨 喜欢清爽、治愈、蓝色系的视觉风格</p >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 网站统计（原来的技能页面） -->
+<div class="page" id="stats">
+  <div class="container">
+    <h2>网站统计</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">1268</div>
+        <div class="name">总访问</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">356</div>
+        <div class="name">独立访客</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">28</div>
+        <div class="name">留言数量</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">46</div>
+        <div class="name">上线天数</div>
+      </div>
+    </div>
+    <div class="stat-desc">
+      <p>📅 建站时间：2026-09-15</p > 
+    </div>
+  </div>
+</div>
+
+<!-- 项目展示 -->
+<div class="page" id="projects">
+  <div class="container">
+    <h2>项目展示</h2>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-cover">🌐</div>
+        <div class="project-body">
+          <h4>个人小窝网站</h4>
+          <p>一个清爽蓝色系的个人主页，用来展示自我介绍、项目和随笔内容。</p >
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-cover">📝</div>
+        <div class="project-body">
+          <h4>随笔记录</h4>
+          <p>记录日常想法、心情和小事，像一个属于自己的安静日记本。</p >
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-cover">💡</div>
+        <div class="project-body">
+          <h4>小工具练习</h4>
+          <p>以后会加入一些简单好玩的网页小工具，慢慢完善这个小站。</p >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 留言板 -->
+<div class="page" id="messages">
+  <div class="container">
+    <h2>留言板</h2>
+
+    <div class="message-board">
+      <p style="color:#3d4f5f;">欢迎在这里留下你的脚印，随便说点什么都可以。</p >
+
+      <div class="message-list">
+        <div class="message-item">👋 欢迎来到淋雨的小窝，蓝色系好清爽！</div>
+        <div class="message-item">🌊 现在背景干净多了，看起来很舒服。</div>
+        <div class="message-item">✨ 很喜欢这种安静的个人网站，以后常来看看。</div>
+        <div class="message-item">☁️ 希望这里能慢慢积攒更多回忆。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 底部 -->
+<footer>
+  <p>© 2026 淋雨の小窝 | 用 ❤️ 和代码慢慢搭建</p >
+</footer>
+
+<script>
+const buttons = document.querySelectorAll('.nav-links button');
+const pages = document.querySelectorAll('.page');
+
+buttons.forEach(btn => {
+  btn.onclick = function(){
+    buttons.forEach(b => b.classList.remove('active'));
+    pages.forEach(p => p.classList.remove('show'));
+    this.classList.add('active');
+    document.getElementById(this.dataset.page).classList.add('show');
+  }
+})
+</script>
+
+</body>
+</html>
